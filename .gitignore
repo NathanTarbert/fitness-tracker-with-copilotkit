@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+node_modules
 /.pnp
 .pnp.js
 
@@ -10,8 +11,11 @@
 
 # next.js
 .next
+.next/app-build-manifest.json
 /.next/
 /out/
+static
+static/chunks
 
 # production
 /build
@@ -40,6 +44,8 @@ yarn-error.log*
 
 # vercel
 .vercel
+cache/webpack
+vender-chunks
 
 node_modules
 .env
