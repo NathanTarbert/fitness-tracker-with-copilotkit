@@ -9,6 +9,7 @@
 /coverage
 
 # next.js
+.next
 /.next/
 /out/
 
@@ -20,6 +21,9 @@
 *.pem
 .eslintcache
 next-env.d.ts
+
+# Mock DB
+db.json
 
 
 # debug
