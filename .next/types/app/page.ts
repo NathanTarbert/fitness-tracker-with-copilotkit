@@ -1,4 +1,4 @@
-// File: /Users/nathantarbert/Desktop/Code-Projects/interactive-sales-dashboard-with-copilokit/src/app/page.tsx
+// File: /Users/nathantarbert/Desktop/Code-Projects/saas-with-copilokit/src/app/page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

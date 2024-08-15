@@ -1,11 +1,25 @@
 "use client";
-import { useState, FormEvent, useCallback, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Box,
+  FormControl,
+  Input,
+  Form,
+  Button,
+  FormErrorMessage,
+  Flex,
+  Switch,
+  FormLabel,
+  Divider,
+} from "@chakra-ui/react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 const Home: React.FC = () => {
   const [username, setUsername] = useState<string>(""); // State for the username input
   const [password, setPassword] = useState<string>(""); // State for the password input
   const [errorMessage, setErrorMessage] = useState<string>(""); // State for storing error messages
+
   const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -17,11 +31,6 @@ const Home: React.FC = () => {
       return;
     }
     setErrorMessage(""); // Clear any existing error messages
-
-    // Make an API request to the login endpoint
-    // const searchParams = useSearchParams();
-    // const code = searchParams.get("code");
-    // console.log({ code });
 
     const res = await fetch("/api/login", {
       method: "POST",
@@ -40,10 +49,47 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <Box textAlign="left" px={3}>
       <form onSubmit={handleSubmit}>
-        <div>
+        <Input
+          type="text"
+          color="black"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          _hover={{
+            borderColor: "gray.300",
+          }}
+          _focus={{
+            borderColor: "blue.500",
+          }}
+          sx={{
+            "::placeholder": {
+              color: "gray.400",
+            },
+          }}
+        />
+
+        <Input
+          type="text"
+          color="black"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          _hover={{
+            borderColor: "gray.300",
+          }}
+          _focus={{
+            borderColor: "blue.500",
+          }}
+          sx={{
+            "::placeholder": {
+              color: "gray.400",
+            },
+          }}
+        />
+
+        {/* <div>
           <label>Username:</label>
           <input
             type="text"
@@ -60,11 +106,11 @@ const Home: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
+        </div> */}
         {errorMessage && <p>{errorMessage}</p>}
         <button type="submit">Login</button>
       </form>
-    </div>
+    </Box>
   );
 };
 
