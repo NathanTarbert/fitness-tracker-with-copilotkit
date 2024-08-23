@@ -1,5 +1,6 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Nav() {
   const router = useRouter();
@@ -20,8 +21,17 @@ export default function Nav() {
   };
 
   return (
-    <nav className="px-4 py-3 bg-blue-50 h-[10vh] flex items-center justify-between">
-      <h3 className="font-bold text-xl">Hi-Fi Inc. - Welcome {userName}</h3>
+    <nav className="flex justify-around px-20 py-5 border-b-2 bg-slate-50">
+      <Link className="hover:underline" href="/">
+        Fitness Tracker
+      </Link>
+      <Link className="hover:underline" href="/create">
+        Custom Fitness
+      </Link>
+      <Link className="hover:underline" href="/reports">
+        Reports
+      </Link>
+
       <button
         className="px-4 py-2 bg-red-500 text-red-50 rounded-md"
         onClick={handleSignOut}>

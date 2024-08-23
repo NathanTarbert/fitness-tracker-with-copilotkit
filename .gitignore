@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-node_modules
 /.pnp
 .pnp.js
 
@@ -10,11 +9,8 @@ node_modules
 /coverage
 
 # next.js
-.next
-.next/app-build-manifest.json
 /.next/
 /out/
-static
 static/chunks
 
 # production
@@ -28,7 +24,6 @@ next-env.d.ts
 
 # Mock DB
 db.json
-
 
 # debug
 npm-debug.log*
@@ -44,13 +39,10 @@ yarn-error.log*
 
 # vercel
 .vercel
-cache/webpack
-vender-chunks
+/cache/webpack
+/webpack/
+/vendor-chunks
 
-node_modules
-.env
-typechain
-
-
-.vscode
-tsconfig.tsbuildinfo
+# IDEs and editors
+/.vscode
+/tsconfig.tsbuildinfo

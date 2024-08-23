@@ -1,47 +1,47 @@
 "use client";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import React, { PureComponent } from "react";
 import {
-	ChartConfig,
-	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
-} from "@/components/ui/chart";
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+import { ChartConfig } from "@/components/ui/chart";
 
 const chartConfig = {
-	sales: {
-		label: "Sales",
-		color: "#2563eb",
-	},
-	customers: {
-		label: "Customers",
-		color: "#60a5fa",
-	},
+  days: {
+    label: "days",
+    color: "#2563eb",
+  },
+  calories: {
+    label: "calories",
+    color: "#60a5fa",
+  },
 } satisfies ChartConfig;
 
-
 export default function ChartComponent({ chartData }: { chartData: Chart[] }) {
-	
-	return (
-		<ChartContainer config={chartConfig} className='min-h-[200px] w-full'>
-			<BarChart accessibilityLayer data={chartData}>
-				<CartesianGrid vertical={false} />
-				<XAxis
-					dataKey='month'
-					tickLine={false}
-					tickMargin={10}
-					axisLine={false}
-					tickFormatter={(value) => value.slice(0, 3)}
-				/>
-				<YAxis
-					axisLine={false}
-					tickLine={false}
-					tickMargin={10}
-					tickCount={5}
-				/>
-				<ChartTooltip content={<ChartTooltipContent />} />
-				<Bar dataKey='sales' fill='var(--color-sales)' radius={4} />
-				<Bar dataKey='customers' fill='var(--color-customers)' radius={4} />
-			</BarChart>
-		</ChartContainer>
-	);
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <AreaChart
+        width={500}
+        height={400}
+        data={chartData}
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0,
+        }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
 }

@@ -1,70 +1,113 @@
 import { useState } from "react";
+
+import Image from "next/image";
+import ImageUpload from "@/app/components/Image";
+import { Box, Progress } from "@chakra-ui/react";
 import ChartComponent from "@/app/components/Chart";
-import CardComponent from "@/app/components/Card";
-import TableComponent from "@/app/components/Table";
 import CheckboxComponent from "@/app/components/Checkbox";
-import Nav from "@/app/components/Nav";
 import { useCopilotReadable, useCopilotAction } from "@copilotkit/react-core";
+import Nav from "../components/Nav";
+import "../globals.css";
+import avatar from "@/public/nathan_headshot_avatar.jpg";
 
 export default function App() {
   const [todoList, setTodoList] = useState<Todo[]>([
     {
       id: 1,
-      text: "Validate my product",
+      text: "Run 8 miles today",
       completed: false,
     },
     {
       id: 2,
-      text: "Research the first steps to creating a startup",
+      text: "Catch the yoga class at noon",
       completed: false,
     },
     {
       id: 3,
-      text: "Start hiring an all-star team",
+      text: "No carb day!",
       completed: false,
-    },
-  ]);
-
-  const [invoiceList, setInvoiceList] = useState<Invoice[]>([
-    {
-      id: 1,
-      status: "Pending",
-      amount: 1000,
-      method: "Credit Card",
-    },
-    {
-      id: 2,
-      status: "Paid",
-      amount: 2000,
-      method: "Paypal",
-    },
-    {
-      id: 3,
-      status: "Overdue",
-      amount: 3000,
-      method: "Bank Transfer",
     },
   ]);
 
   const [chartData, setChartData] = useState<Chart[]>([
-    { month: "January", sales: 350, customers: 80 },
-    { month: "February", sales: 200, customers: 30 },
-    { month: "March", sales: 1500, customers: 120 },
-    { month: "April", sales: 1050, customers: 190 },
-    { month: "May", sales: 1200, customers: 130 },
-    { month: "June", sales: 550, customers: 140 },
-    { month: "July", sales: 1200, customers: 130 },
-    { month: "August", sales: 1100, customers: 130 },
-    { month: "September", sales: 1500, customers: 130 },
-    { month: "October", sales: 1200, customers: 170 },
-    { month: "November", sales: 1200, customers: 130 },
-    { month: "December", sales: 1200, customers: 130 },
+    {
+      name: "Jan",
+      uv: 1000,
+      pv: 2400,
+      amt: 2400,
+    },
+    {
+      name: "Feb",
+      uv: 2000,
+      pv: 1398,
+      amt: 2210,
+    },
+    {
+      name: "March",
+      uv: 2200,
+      pv: 9800,
+      amt: 2290,
+    },
+    {
+      name: "April",
+      uv: 2380,
+      pv: 3908,
+      amt: 2000,
+    },
+    {
+      name: "May",
+      uv: 1890,
+      pv: 4800,
+      amt: 2181,
+    },
+    {
+      name: "June",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "July",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+    {
+      name: "Aug",
+      uv: 2490,
+      pv: 3300,
+      amt: 2100,
+    },
+    {
+      name: "Sep",
+      uv: 2490,
+      pv: 4900,
+      amt: 2100,
+    },
+    {
+      name: "Oct",
+      uv: 3490,
+      pv: 2100,
+      amt: 2100,
+    },
+    {
+      name: "Nov",
+      uv: 2490,
+      pv: 2300,
+      amt: 2100,
+    },
+    {
+      name: "Dec",
+      uv: 4490,
+      pv: 4100,
+      amt: 2100,
+    },
   ]);
 
   const calculateTotal = (key: keyof Chart): number => {
-    if (key === "sales")
-      return chartData.reduce((acc, item) => acc + item.sales, 0);
-    return chartData.reduce((acc, item) => acc + item.customers, 0);
+    if (key === "calories")
+      return chartData.reduce((acc, item) => acc + item.calories, 0);
+    return chartData.reduce((acc, item) => acc + item.steps, 0);
   };
 
   //👇🏻 pass Chart data to CopilotKit
@@ -86,26 +129,26 @@ export default function App() {
         required: true,
       },
       {
-        name: "sales",
+        name: "steps",
         type: "number",
         description: "The sales data for the month.",
         required: true,
       },
       {
-        name: "customers",
+        name: "calories",
         type: "number",
-        description: "The customers data for the month.",
+        description: "The calorie data for the month.",
         required: true,
       },
     ],
     render: ({ status, args }) => {
-      const { month, sales, customers } = args;
-      if (month === undefined || sales === undefined || customers === undefined)
+      const { month, steps, calories } = args;
+      if (month === undefined || steps === undefined || calories === undefined)
         return "";
       if (
         typeof month !== "string" ||
-        typeof sales !== "number" ||
-        typeof customers !== "number"
+        typeof steps !== "number" ||
+        typeof calories !== "number"
       )
         return "";
 
@@ -113,7 +156,7 @@ export default function App() {
         setChartData((prev) => {
           return prev.map((item) => {
             if (item.month === month) {
-              return { month, sales, customers };
+              return { month, steps, calories };
             }
             return item;
           });
@@ -122,7 +165,7 @@ export default function App() {
       return (
         <div className="w-full p-2">
           <p className="text-sm text-blue-400 mb-2">Status: {status}</p>
-          <ChartComponent chartData={[{ month, sales, customers }]} />
+          <ChartComponent chartData={[{ month, steps, calories }]} />
           <button
             className="px-4 py-2 bg-blue-400 text-white shadow rounded-md"
             onClick={updateChart}>
@@ -131,133 +174,15 @@ export default function App() {
         </div>
       );
     },
-    handler: async ({ sales, customers, month }) => {
+    handler: async ({ steps, calories, month }) => {
       // setChartData((prev) => {
-      //     return prev.map((item) => {
-      //         if (item.month === month) {
-      //             return { month, sales, customers };
-      //         }
-      //         return item;
-      //     });
-      // })
-    },
-  });
-
-  //👇🏻 pass invoice data to CopilotKit
-  useCopilotReadable({
-    description:
-      "The invoice list is a list of invoices that need to be paid. You can add, edit, and remove invoices from the list and also update the status of the invoice. An invoice status can either be Paid, Pending, or Overdue. The acceptable payment methods are Credit Card, Paypal, and Bank Transfer.",
-    value: invoiceList,
-  });
-
-  //👇🏻 action to add new invoice
-  useCopilotAction({
-    name: "addNewInvoice",
-    description: "Add new invoices to the invoice list",
-    parameters: [
-      {
-        name: "status",
-        type: "string",
-        description: "The status of the invoice.",
-        required: true,
-      },
-      {
-        name: "amount",
-        type: "number",
-        description: "The amount of the invoice.",
-        required: true,
-      },
-      {
-        name: "method",
-        type: "string",
-        description: "The payment method of the invoice.",
-        required: true,
-      },
-    ],
-    render: ({ status: fetchStatus, args }) => {
-      const { amount, method, status } = args;
-      if (
-        method !== "Credit Card" &&
-        method !== "Paypal" &&
-        method !== "Bank Transfer"
-      )
-        return "";
-      if (status !== "Paid" && status !== "Pending" && status !== "Overdue")
-        return "";
-      if (amount === undefined) return "";
-
-      const addInvoice = () => {
-        setInvoiceList((prev) => {
-          return [...prev, { id: prev.length + 1, status, amount, method }];
-        });
-      };
-      return (
-        <div className="w-full p-2">
-          <p className="text-small text-blue-500 mb-2">Status: {fetchStatus}</p>
-          {status && amount !== undefined && method && (
-            <TableComponent
-              invoiceList={[
-                { id: invoiceList.length + 1, status, amount, method },
-              ]}
-            />
-          )}
-          <button
-            className="px-4 py-2 bg-blue-400 text-white shadow rounded-md"
-            onClick={addInvoice}>
-            Add to Page
-          </button>
-        </div>
-      );
-    },
-    handler: async ({ status, amount, method }) => {
-      // if (method !== "Credit Card" && method !== "Paypal" && method !== "Bank Transfer") return;
-      // if (status !== "Paid" && status !== "Pending" && status !== "Overdue") return;
-      // setInvoiceList((prev) => {
-      //     return [...prev, { id: prev.length + 1, status, amount, method }];
-      //  })
-    },
-  });
-
-  //👇🏻 action to delete invoices
-  useCopilotAction({
-    name: "deleteInvoice",
-    description: "Remove invoices to the invoice list",
-    parameters: [
-      {
-        name: "id",
-        type: "number",
-        description: "The id of the invoice to remove.",
-        required: true,
-      },
-    ],
-    render: ({ status, args }) => {
-      const { id } = args;
-      if (id === undefined) return "";
-      const getInvoice = invoiceList.find((item) => item.id === id);
-      if (!getInvoice) return "";
-
-      const deleteInvoice = () => {
-        setInvoiceList((prev) => {
-          return prev.filter((item) => item.id !== id);
-        });
-      };
-
-      return (
-        <div className="w-full p-2">
-          <p className="text-sm text-blue-400 mb-2">Status: {status}</p>
-          <TableComponent invoiceList={[getInvoice]} />
-          <button
-            className="px-4 py-2 bg-blue-400 text-white shadow rounded-md"
-            onClick={deleteInvoice}>
-            Delete
-          </button>
-        </div>
-      );
-    },
-    handler: async ({ id }) => {
-      // setInvoiceList((prev) => {
-      //     return prev.filter((item) => item.id !== id);
-      // })
+      //   return prev.map((item) => {
+      //     if (item.month === month) {
+      //       return { month, steps, calories };
+      //     }
+      //     return item;
+      //   });
+      // });
     },
   });
 
@@ -310,12 +235,12 @@ export default function App() {
     },
     handler: async ({ id }) => {
       // setTodoList(
-      //     todoList.map((todo) => {
-      //         if (todo.id === id) {
-      //             return { ...todo, completed: !todo.completed };
-      //         }
-      //         return todo;
-      //     })
+      //   todoList.map((todo) => {
+      //     if (todo.id === id) {
+      //       return { ...todo, completed: !todo.completed };
+      //     }
+      //     return todo;
+      //   })
       // );
     },
   });
@@ -358,7 +283,7 @@ export default function App() {
     },
     handler: async ({ text }) => {
       // setTodoList((prev) => {
-      //     return [...prev, { id: prev.length + 1, text, completed: false }];
+      //   return [...prev, { id: prev.length + 1, text, completed: false }];
       // });
     },
   });
@@ -400,35 +325,36 @@ export default function App() {
     },
     handler: async ({ id }) => {
       // setTodoList((prev) => {
-      //     return prev.filter((item) => item.id !== id);
+      //   return prev.filter((item) => item.id !== id);
       // });
     },
   });
 
   return (
-    <main>
+    <Box>
       <Nav />
-      <div className="w-full flex items-center justify-between p-4 md:flex-row space-x-4">
-        <div className="lg:w-1/2 h-[300px] lg:mb-0 mb-4 w-full">
-          <CardComponent
-            invoiceLength={invoiceList.length}
-            todoLength={todoList.length}
-            totalCustomers={calculateTotal("customers")}
-            totalSales={calculateTotal("sales")}
-          />
-        </div>
-        <div className="lg:w-1/2  h-[300px] w-full lg:mb-0 mb-4 ">
+      <div className="pt-4 pl-4 ">
+        <ImageUpload />
+      </div>
+      <div className="bg-current">
+        <Progress hasStripe value={64} />
+      </div>
+
+      <div className="flex items-stretch">
+        <div className="lg:w-full  h-[300px] w-full lg:mb-0 mb-4 pt-6   ">
           <ChartComponent chartData={chartData} />
         </div>
       </div>
-      <div className="w-full flex flex-row items-center justify-between lg:space-x-4 p-4">
-        <div className="lg:w-1/2 w-full h-full lg:mb-0 mb-8">
-          <TableComponent invoiceList={invoiceList} />
-        </div>
-        <div className="lg:w-1/2 w-full h-full lg:mb-0 mb-4">
-          <CheckboxComponent todoList={todoList} setTodoList={setTodoList} />
-        </div>
+      <div className="pt-4 p-4 font-bold text-xl mb-3 text-[#071952]  ">
+        Steps walked in 2024
       </div>
-    </main>
+      <div className="pt-4 p-4 font-bold text-base border-8 mb-3 text-[#071952] ">
+        9038 steps total
+      </div>
+
+      <div className="items-center border-8">
+        <CheckboxComponent todoList={todoList} setTodoList={setTodoList} />
+      </div>
+    </Box>
   );
 }

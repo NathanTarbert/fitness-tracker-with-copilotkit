@@ -1,29 +1,19 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  FormControl,
-  Input,
-  Button,
-  ButtonGroup,
-  Switch,
-  FormLabel,
-  Divider,
-} from "@chakra-ui/react";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import App from "../components/App";
-import { Arbutus } from "next/font/google";
-import { request } from "http";
+import { Box, FormControl, Input, Flex, Center, Text } from "@chakra-ui/react";
 
-const Home: React.FC = () => {
+const Login: React.FC = () => {
   const [username, setUsername] = useState<string>(""); // State for the username input
   const [password, setPassword] = useState<string>(""); // State for the password input
   const [errorMessage, setErrorMessage] = useState<string>(""); // State for storing error messages
-  const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
 
   const router = useRouter();
+
+  const [input, setInput] = useState("");
+
+  const isError = input === "";
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     // console.log({ username });
@@ -52,68 +42,91 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Box
-      h="200px"
-      className="flex items-center justify-between p-6 lg:px-8 shadow sticky bg-white bg-opacity-50 backdrop-blur-lg backdrop-filter dark:border dark:border-gray-100/10 dark:bg-boxdark-2 bg-slate-50"
-      aria-label="Global">
-      <form onSubmit={handleSubmit}>
-        <Input
-          paddingLeft={20}
-          type="text"
-          color="black"
-          fontFamily={"Arbutus"}
-          fontSize={25}
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          _hover={{
-            borderColor: "gray.400",
-          }}
-          _focus={{
-            borderColor: "gray.400",
-          }}
-          sx={{
-            "::placeholder": {
-              color: "gray.400",
-            },
-          }}
-        />
-
-        <Input
-          color="black"
-          fontFamily={"Arbutus"}
-          fontSize={25}
-          placeholder="Password"
-          type={show ? "text" : "password"}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          _hover={{
-            borderColor: "gray.400",
-          }}
-          _focus={{
-            borderColor: "black.500",
-          }}
-          sx={{
-            "::placeholder": {
-              color: "gray.500",
-            },
-          }}
-        />
-
-        {errorMessage && <p>{errorMessage}</p>}
-        <Box paddingLeft={20} paddingTop={40}>
-          <button
-            className="px-4 py-2 bg-blue-500 text-blue-50 rounded-md"
-            type="submit">
-            Login
-          </button>
-        </Box>
-      </form>
-      <Box fontSize={30} fontFamily={"Arbutus"} paddingBottom={80}>
-        HI FI Inc.
+    <Flex>
+      <Box
+        height={1070}
+        width={1400}
+        sx={{
+          borderColor: "gray.400",
+          border: "solid",
+          bg: "white",
+        }}>
+        <Center>
+          <Text fontSize="50px" fontWeight="bold" fontFamily={"Arbutus"}>
+            Hi Fi Inc.
+          </Text>
+        </Center>
+        <form onSubmit={handleSubmit}>
+          <FormControl isInvalid={isError} isRequired backgroundColor="#EDF2F7">
+            <Center p={80}>
+              <Input
+                backgroundColor="#1A202C"
+                border="solid"
+                borderColor="black"
+                borderRadius={10}
+                type="text"
+                color="white"
+                fontFamily={"Arbutus"}
+                fontSize={25}
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                _hover={{
+                  borderColor: "gray.400",
+                }}
+                _focus={{
+                  borderColor: "gray.400",
+                }}
+                sx={{
+                  "::placeholder": {
+                    color: "gray.400",
+                  },
+                }}
+              />
+            </Center>
+            <Center p={30}>
+              <Input
+                backgroundColor="#1A202C"
+                isInvalid={isError}
+                isRequired
+                border="solid"
+                borderColor="gray.400"
+                borderRadius={10}
+                color="white"
+                fontFamily={"Arbutus"}
+                fontSize={25}
+                placeholder="Password"
+                type={show ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                _hover={{
+                  borderColor: "gray.400",
+                }}
+                _focus={{
+                  borderColor: "black.500",
+                }}
+                sx={{
+                  "::placeholder": {
+                    color: "gray.500",
+                  },
+                }}
+              />
+              {errorMessage && <p>{errorMessage}</p>}
+            </Center>
+            <Box>
+              <Center>
+                <div>
+                  <button className="px-4 py-2 bg-blue-400 text-black-50 font-bold rounded-md">
+                    Login
+                  </button>
+                </div>
+              </Center>
+            </Box>
+          </FormControl>
+        </form>
       </Box>
-    </Box>
+    </Flex>
   );
 };
 
-export default Home;
+export default Login;

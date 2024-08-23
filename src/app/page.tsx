@@ -6,6 +6,7 @@ import { CopilotPopup } from "@copilotkit/react-ui";
 import "@copilotkit/react-ui/styles.css";
 import "@copilotkit/react-textarea/styles.css";
 import App from "./components/App";
+import CreateFitness from "./create/page";
 
 export default function Home() {
   const router = useRouter();
@@ -37,7 +38,7 @@ export default function Home() {
         labels={{
           title: "Data Visualization Copilot",
           initial:
-            "Hello there! I can help you add, edit, and remove data from the various components on the page. You can update the chat, table, and todo list. Let's get started!",
+            "Hello there! Welcome to your Fitness Dashboard, please give me a command and I will help you. Let's get started!",
         }}
         clickOutsideToClose={false}
       />
